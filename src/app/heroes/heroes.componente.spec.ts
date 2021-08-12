@@ -14,7 +14,7 @@ beforeEach(() => {
     HEROES = [
         {id: 1, name: 'SpideDude', strength: 8},
         {id: 2, name: 'Wonderful Woman', strength: 24},
-        {id: 1, name: 'SuperDude', strength: 55},
+        {id: 3, name: 'SuperDude', strength: 55},
     ]
 
     mockHeroService = jasmine.createSpyObj(['getHeroes', 'addHero', 'deleteHero']);
@@ -30,6 +30,16 @@ describe('delete', () => {
         component.delete(HEROES[2]);
 
         expect(component.heroes[2]).toBe(undefined);
+    })
+
+    it('should remove indicated hero', () => {
+        mockHeroService.deleteHero.and.returnValue(of(true));
+        component.heroes = HEROES;
+        const id = component.heroes[2].id;
+        
+        component.delete(HEROES[2]);
+        const find = component.heroes.find(f => f.id === id);
+        expect(find).toBe(undefined);
     })
 
     it('should call deleteHero with correct params', () => {
